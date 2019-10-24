@@ -1,0 +1,1045 @@
+<html>
+<head>
+    <title>Ugly calculator using JQuery and math.js</title>
+    <style type="text/css">
+        body {
+            margin: 0px 0px 0px 0px;
+        }
+       
+        h1 {
+            font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+            font-size: 30px;
+            padding: 20px 10px;
+            text-align: center;
+            text-transform: uppercase;
+            text-rendering: optimizeLegibility;
+            color: #e0dfdc;
+            background-color: #333;
+            letter-spacing: .1em;
+            text-shadow: 
+            0 -1px 0 #fff, 
+            0 1px 0 #2e2e2e, 
+            0 2px 0 #2c2c2c, 
+            0 3px 0 #2a2a2a, 
+            0 4px 0 #282828, 
+            0 5px 0 #262626, 
+            0 6px 0 #242424, 
+            0 7px 0 #222, 
+            0 8px 0 #202020, 
+            0 9px 0 #1e1e1e, 
+            0 10px 0 #1c1c1c, 
+            0 11px 0 #1a1a1a, 
+            0 12px 0 #181818, 
+            0 13px 0 #161616, 
+            0 14px 0 #141414, 
+            0 15px 0 #121212, 
+            0 22px 30px rgba(0, 0, 0, 0.9);
+        }
+       
+        #calculator {
+            font-size: 0;
+            width: 400px;
+            background-color: #021627;
+            padding: 20px;
+            margin: auto;
+            border-radius: 10px;
+        }
+        #keysetnum{
+
+            font-size : 0;
+            width : 120px;
+            height : 190px;
+            background-color: #021627;;
+            padding : auto;
+            margin: 3px 0px 3px 0px;
+            border-radius: 10px;
+            display:inline-block;
+            
+        }
+        #keysetoper{
+          
+            font-size : 0;
+            width :58px;
+            background-color : #021627;;
+            padding : auto;
+            margin: auto;
+            border-radius: 10px;
+            display:inline-block;
+        }
+        #keysetevcl{
+          
+          font-size : 0;
+          width :58px;
+          background-color : #021627;;
+          padding : auto;
+          margin: auto;
+          border-radius: 10px;
+          display:inline-block;
+      }
+        #keysetextra{
+         
+            font-size : 0;
+            width :160px;
+            background-color : #021627;;
+            padding-left: 1px;
+            padding-right: 1px;
+
+            margin: auto;
+            border-radius: 10px;
+            display:inline-block;
+        }
+        #wrapper{
+        
+            background-color : #021627;;
+            width : 400px;
+            padding :2px 0px 2px 0px;
+            margin : 75px 0px 0px 0px;
+        }
+       
+        #result {
+            width: 385px;
+            height: 55px;
+            margin-bottom: 15px;
+            padding: 0px 5px 0px 5px;
+            background-color: #eeeeee;
+            border-radius: 5px;
+            display: inline-flex;
+            justify-content: flex-end;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: inset 0 0px 3px;
+            font: 20px digital;
+        }
+
+        #latex {
+            width: 385px;
+            height: 100px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 0px 5px 0px 5px;
+            background-color: #eeeeee;
+            border-radius: 5px;
+            display:inline-flex;
+            justify-content: flex-end;
+            align-items: center;
+            overflow:hidden;
+            box-shadow: inset 0 0px 3px;
+            font: 20px digital;        
+            
+        }        
+        #history{
+            overflow:scroll;
+            position: absolute;
+            font : 15px black;
+            
+	        background-color: #eeeeee;
+	       
+          /*  justify-content: flex-end;
+            align-items: center;*/
+	        width:370px;
+	        height: 50px;
+            margin : auto;
+	        padding: 10px;
+
+        }
+       
+        .key {
+            width: 35px;
+            height: 25px;
+            background-color: #eaefff;
+            display: inline-flex;
+            margin: 3px 5px 8px 0px;
+            vertical-align: middle;
+            justify-content: center;
+            align-items: center;
+            padding: 5px 0px 5px 0px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #a1a1a1, 0 2px 5px rgba(0, 0, 0, .75);
+            font: bold 20px sans-serif;
+        }
+        .popup-key{
+            width : 52px;
+            height: 48px;
+           
+            display : inline-flex;
+            margin: 3px 3px 3px 3px;
+            vertical-align : middle;
+            justify-content :center;
+            align-items : center;
+            padding: 5px 0px 5px 0px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #a1a1a1, 0 2px 5px rgba(0, 0, 0, .75);
+            font:italic bold 15px sans-serif;
+        }
+        .help-key{
+            font : italic bold 15px sans-serif;
+            height : 50px;
+            width : 52px;
+            color : #642115;
+            /*height : 25px;*/
+            margin : 0px 2.2px 5px 2.2px;
+            background-color : #e69188;
+            box-shadow: 0 3px 0 #642115, 0 2px 5px rgba(0, 0, 0, .75);
+            border-radius :70px;
+        }
+        .par-key{
+            background-color:#f5bab3;
+            color : #642115;
+            box-shadow: 0 3px 0 #642115, 0 2px 5px rgba(0, 0, 0, .75);
+        }
+        .number-key{
+            background-color: #f3deb0;
+            box-shadow: 0 3px 0 #644415, 0 2px 5px rgba(0, 0, 0, .75);
+            color : #644915
+        }
+        .symbol-key {
+            margin : 0px 0px 0px 5px;
+            background-color: #f3deb0;
+            box-shadow: 0 3px 0 #644415, 0 2px 5px rgba(0, 0, 0, .75);
+            font: italic 20px "Times New Roman"
+        }
+
+        .function-key {
+            font: italic 15px "Times New Roman";
+            background-color : #eaefff;
+            color : rgb(48, 24, 24);
+        }
+
+        .eval-key {
+            width : 50px;
+            height :50px;
+            margin: 3px 3px 3px 3px;
+            background-color: #6e93d6;
+            color : white;
+            border-radius: 10px;
+            box-shadow: 0 3px 0 #152e64, 0 2px 5px rgba(0, 0, 0, .75);
+
+
+            
+        }
+       
+        .clear-key {
+            width : 50px;
+            height: 50px;
+            margin: 3px 3px 3px 3px;
+            background-color: #bb1c09;
+            box-shadow: 0 3px 0 #642115, 0 2px 5px rgba(0, 0, 0, .75);
+            border-radius: 10px;
+            color: white;
+        }
+        .back-key{
+            width : 50px;
+            height: 50px;
+            margin: 3px 3px 3px 3px;
+            background-color: #fdd171;
+            box-shadow: 0 3px 0 #645815, 0 2px 5px rgba(0, 0, 0, .75);
+            border-radius: 10;
+            color: white;
+        
+        }
+     .long-key{
+            font : italic bold 15px sans-serif;
+            width : 52px;
+            height : 50px;
+            /*height : 25px;*/
+            margin : 0px 2.2px 5px 2.2px;
+            background-color : #f3deb0;
+            color : #644915;
+            border-radius :70px;
+            box-shadow: 0 3px 0 #644415, 0 2px 5px rgba(0, 0, 0, .75);
+            
+        }
+        .cal-key{
+            background-color : #eaefff;
+            color : rgb(48, 24, 24);
+
+        }
+        .invector-key{
+            font : italic bold 15px sans-serif;
+            width : 52px;
+            height : 25px;
+            /*height : 25px;*/
+            margin : 0px 0px 0px 10px;
+            background-color : #f3deb0;
+            color : #644915;
+            border-radius :70px;
+            box-shadow: 0 3px 0 #644415, 0 2px 5px rgba(0, 0, 0, .75);
+            
+        }
+        .key:active {
+            background-color: #a1a1a1;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+
+        .popupxyz {
+	        position: absolute;
+            font: 10px italic;
+	        display: none;
+	        background-color: #021627;;
+	        border: solid 2px #d0d0d0;
+	        width: 180px;
+	        height: 40px;
+            margin : auto;
+	        padding: 10px;
+        }
+        .popupxyz div {
+	        position: absolute;
+            padding : auto;
+}   
+
+        .popupConst{
+            position: absolute;
+            font: italic 20px "Times New Roman";
+	        display: none;
+	        background-color: #021627;;
+	        border: solid 2px #d0d0d0;
+	        width: 130px;
+	        height: 40px;
+            margin : auto;
+	        padding: 10px;
+
+        }
+        .popupConst div{
+            position: absolute;
+            padding : auto; 
+        }
+        .popupTrif{
+            position: absolute;
+            font: italic 20px;
+	        display: none;
+	        background-color: #021627;;
+	        border: solid 2px #d0d0d0;
+	        width: 130px;
+	        height: 40px;
+            margin : auto;
+	        padding: 10px;
+
+        }
+        .popupTrif div{
+            position: absolute;
+            padding : auto; 
+        }
+        .popupHistory{
+            overflow:scroll;
+            position: absolute;
+            font : 10px black;
+            display:none;
+	        background-color: #eeeeee;
+	        border: solid 2px #eeeeee;
+            justify-content: flex-end;
+            align-items: center;
+	        width:150px;
+	        height: 30px;
+            margin : auto;
+	        padding: 10px;
+
+        }
+        .popupHistory div{
+            position: absolute;
+            padding : auto; 
+        }
+        .historytxt{
+            font-size : 15px;
+            
+        }
+        .popupVector {
+            position: absolute;
+            font: italic 20px;
+	        display: none;
+	        background-color: #021627;;
+	        border: solid 2px #d0d0d0;
+	        width: 130px;
+	        height: 40px;
+            margin : 5px 20px 5px 20px;
+	        padding: 10px;
+
+        }
+        .popupVector div{
+
+            position: absolute;
+            padding : auto; 
+        }
+        #outline{
+            margin-top : 5px;
+        }
+
+    </style>
+ 
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' type='text/javascript'></script>
+    <script src='math.js' type='text/javascript'></script>
+
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>  
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          "HTML-CSS": { scale: 75}
+        });
+    </script>
+      
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var parser = math.parser();
+ 
+            var ifvec2x2 = 0;
+            var vector2x2Value = new Array('[','x',',','x',']')
+            var vector2x2line = '';
+            var vector2x2indexnum = 1;
+            var minus2x2vec = 1;
+
+            var ifvec =0;
+            var vectorValue = new Array('[','x',',','x',',','x',']')
+            var vectorline = '';
+            var vectorindexnum = 1;
+            var minusvec = 1;
+
+            var helpValue ='';
+            var copytxt = '';
+            var readypaste = '';
+            var displayValue = '0';
+
+            var historyon = 0;
+            var historynum = 0;
+            var historyline = '';
+            var historySave = new Array('1','1','1','1','1','1','1','1','1','1');
+            $('#result').text(displayValue);
+          
+            $('#latex').html('$$' + math.parse(displayValue).toTex()+ '$$');
+        
+           
+          $('#result').mouseup(function(){
+                copytxt = '';
+
+                if(window.getSelection){
+                    copytxt = window.getSelection();
+
+                } else if(document.getSelection){
+                    copytxt = document.getSelection();
+                } else if(document.selection){
+                    copytxt = document.selection.createRange().text;
+                }else{
+                    return;
+                }
+               copytxt = String(copytxt);
+
+             
+
+            
+            })
+            $('#history').mouseup(function(){
+                copytxt = '';
+
+                if(window.getSelection){
+                    copytxt = window.getSelection();
+
+                } else if(document.getSelection){
+                    copytxt = document.getSelection();
+                } else if(document.selection){
+                    copytxt = document.selection.createRange().text;
+                }else{
+                    return;
+                }
+               copytxt = String(copytxt);
+
+             
+
+            
+            })
+            
+            
+      
+            $('.key').each(function(index, key){       
+                $(this).click(function(e){
+                    if(displayValue == '0') displayValue = '';
+                    
+
+
+                    
+                    
+                    if($(this).text() == 'EV')
+                    {
+                        try
+                        {
+                            historySave[historynum] = displayValue;
+                            
+                            displayValue = parser.eval(displayValue).toString();
+
+                            var tokens = displayValue.split(' ');
+                            helpValue = '';
+                            
+                        
+                            if(tokens[0] == 'function')
+                            {
+                                displayValue = tokens[0];
+                            }
+                            historySave[historynum] += '=' +displayValue;
+                            /*$('#history').text(historySave[historynum]); */
+                            $('#result').text(displayValue);
+                            if(historynum != 10) historynum++;
+                            if(historynum == 10) historynum = 0;                     
+                            displayValue = '0';
+                        }
+                        catch (e)
+                        {
+                            displayValue = '0';
+                            if(displayValue != 'function')
+                            {
+                                $('#result').text(e);
+                            }
+                        }               
+                    }
+                    else if($(this).text() == 'xyz'){
+                        helpValue ='xyz';
+                        
+                        var sWidth = window.innerWidth;
+		                var sHeight = window.innerHeight;
+
+		                var oWidth = $('.popupOper').width();
+		                var oHeight = $('.popupOper').height();
+
+		                // 레이어가 나타날 위치를 셋팅
+		                var divLeft = e.clientX + 10;
+		                var divTop = e.clientY + 5;
+
+		                // 레이어가 화면 크기를 벗어나면 위치를 바꾸어 배치
+		                if( divLeft + oWidth > sWidth ) divLeft -= oWidth;
+		                if( divTop + oHeight > sHeight ) divTop -= oHeight;
+
+		                // 레이어 위치를 바꾸었더니 상단기준점(0,0) 밖으로 벗어난다면 상단기준점(0,0)에 배치
+		                if( divLeft < 0 ) divLeft = 0;
+		                if( divTop < 0 ) divTop = 0;
+		                $('.popupxyz').css({
+			                "top": divTop,
+			                "left": divLeft,
+			                "position": "absolute"
+		                }).toggle();
+                        
+
+
+                    }
+                    else if($(this).text() == 'const'){
+                        helpValue ='const';
+                        var sWidth = window.innerWidth;
+		                var sHeight = window.innerHeight;
+
+		                var oWidth = $('.popupConst').width();
+		                var oHeight = $('.popupConst').height();
+
+		
+		                var divLeft = e.clientX + 10;
+		                var divTop = e.clientY + 5;
+
+		
+		                if( divLeft + oWidth > sWidth ) divLeft -= oWidth;
+		                if( divTop + oHeight > sHeight ) divTop -= oHeight;
+
+		
+		                if( divLeft < 0 ) divLeft = 0;
+		                if( divTop < 0 ) divTop = 0;
+		                $('.popupConst').css({
+			                "top": divTop,
+			                "left": divLeft,
+			                "position": "absolute"
+		                }).toggle();
+
+                    }
+
+                    else if($(this).text() == 'Tfunc'){
+
+                        helpValue ='Tfunc'
+                        var sWidth = window.innerWidth;
+		                var sHeight = window.innerHeight;
+
+		                var oWidth = $('.popupTrif').width();
+		                var oHeight = $('.popupTrif').height();
+
+		
+		                var divLeft = e.clientX + 10;
+		                var divTop = e.clientY + 5;
+
+		
+		                if( divLeft + oWidth > sWidth ) divLeft -= oWidth;
+		                if( divTop + oHeight > sHeight ) divTop -= oHeight;
+
+		
+		                if( divLeft < 0 ) divLeft = 0;
+		                if( divTop < 0 ) divTop = 0;
+                      
+		                $('.popupTrif').css({
+			                "top": divTop,
+			                "left": divLeft,
+			                "position": "absolute"
+		                }).toggle();
+
+                    }
+                    else if($(this).text() == 'vec'){
+                        helpValue ='vec'
+                        var sWidth = window.innerWidth;
+		                var sHeight = window.innerHeight;
+
+		                var oWidth = $('.popupVector').width();
+		                var oHeight = $('.popupVector').height();
+
+		
+		                var divLeft = e.clientX + 10;
+		                var divTop = e.clientY + 5;
+
+		
+		                if( divLeft + oWidth > sWidth ) divLeft -= oWidth;
+		                if( divTop + oHeight > sHeight ) divTop -= oHeight;
+
+		
+		                if( divLeft < 0 ) divLeft = 0;
+		                if( divTop < 0 ) divTop = 0;
+		                $('.popupVector').css({
+			                "top": divTop,
+			                "left": divLeft,
+			                "position": "absolute"
+		                }).toggle();
+                        
+
+
+                    }
+                    else if($(this).text() == 'history'){
+                        if(historyon == 0){
+                        helpValue ='hs';
+                      historyline = '';
+
+                      for(var i=0; i<10; i++){
+                          if(historySave[i] != '1'){
+                       historyline += '['+ (i+1) +']' + ' ' +historySave[i] +"\n";
+                       }
+                       
+                      }
+                      historyon = 1;
+                     
+                      $('#history').text(historyline);
+                        }
+                        else{
+                            $('#history').text('');
+                            historyon = 0;
+                        }
+                    }
+                    else if($(this).text() == 'C')
+                        {
+                            displayValue += 'combinations'
+                            $('#result').text(displayValue);
+
+                        }
+                    else
+                    {
+                        if($(this).text() == 'CL')
+                        {
+                            helpValue = '';
+                            vetorline = '';
+                            displayValue = '0';
+                            $('#result').text(displayValue);
+                        }
+ 
+
+                        else if($(this).text() == 'copy'){
+                            helpValue ='copy';
+                           
+                            $('#result').text(copytxt);
+                           
+                           
+                        }
+                        else if($(this).text() == 'pst'){
+                            helpValue ='pst'
+                            displayValue += copytxt;
+                            $('#result').text(displayValue);
+                            coptytxt ='';
+                        }
+               
+
+
+                        else if($(this).text() == '<-')
+                        {
+                            if(displayValue.length <= 1){
+                            displayValue = 0;
+                            $('#result').text(displayValue);
+                            }
+                            else{
+                            displayValue = displayValue.substring(0,displayValue.length-1);
+                            $('#result').text(displayValue);
+                            }
+                        }
+                
+ 
+                       
+                        else if($(this).text() == 'help'){
+                            if(helpValue == ''){
+                            switch(displayValue){
+                                case 'combinations':
+                                $('#result').text('Usage : combination(9,3) = 84')
+                                break;                                
+                                case '!':
+                                $('#result').text('Usage : n! = n*n(-1)...2*1')
+                                break;
+                                case 'dot':
+                                $('#result').text('Usage : dot([2,4,1],[2,2,3]) = 15')
+                                break;
+                                case '^':
+                                $('#result').text('Usage : 2^3 = 8')
+                                break;
+                                case 'exp':
+                                $('#result').text('Usage : exp(10) => e^10')
+                                break;
+                                case 'log':
+                                $('#result').text('Usage : log(2) = ln2 , log(2^36,2) = 36')
+                                break;
+                                case 'sqrt':
+                                $('#result').text('Usage : sqrt(36) => 6')
+                                break;
+                                case 'cross':
+                                $('#result').text('Usage : cross([v,e,c],[t,o,r])')
+                                break;
+                                case '?':
+                                $('#result').text('Usage : "exp" after "?" == "exp Usage" => e^10')
+                                break;
+                                case 'det':
+                                $('#result').text('Usage : det[vec,vec] or det [[x,y,x],[y,z,y]]')
+                                break;
+                                case 'abs':
+                                $('#result').text('Usage : abs(-2) = |-2| = 2')
+                                break;
+                                case 'inv':
+                                $('#result').text('Usage : inv([[1,2],[3,4]]) = [[-2,1],[1.5,-0.5]] inv(4) = 1/4 = 0.25')
+                                break;
+                                default: 
+                                displayValue += '?';
+                                $('#result').text(displayValue);
+                                break;
+                                
+                            }
+                            }else {
+                            switch(helpValue){
+                                case 'hs':
+                                $('#result').text('one push show history , two push hide history')
+                                heplValue = '';
+                                break;
+                                case 'copy':
+                                $('#result').text('Please Drag some line(history or result box) and push copy button')
+                                helpValue = '';
+                                break;
+                                case 'pst':
+                                $('#result').text('if you already push copy button, you can paste at displayVal')
+                                helpValue = '';
+                                break;
+                                case 'xyz':
+                                $('#result').text('you can use xyz anyway')
+                                helpValue = '';
+                                break;
+                                case 'const':
+                                $('#result').text(' pi , e , i is constnumber')
+                                helpValue = '';
+                                break;
+                                case 'Tfunc':
+                                $('#result').text('sin(x) / cos(x) = tan(x)')
+                                helpValue = '';
+                                break;
+                                case 'vec':
+                                $('#result').text('3x3 = [x,y,z], 2x2 = [x,y] you can use this vector or det')
+                                helpValue = '';
+                                break;
+
+                                default: 
+                                helpValue = '';
+                                $('#result').text('fault');
+                                break;
+
+                            }
+                            }
+                    }
+                    else if($(this).text() == '3x3'){
+                        vectorindexnum = 1;
+                        vectorline = '';
+                        vectorValue = Array('[','x',',','x',',','x',']');
+                        for(var i=0; i<vectorValue.length; i++){
+                        vectorline += vectorValue[i];}
+                        ifvec = 1;
+                        $('#result').text(vectorline);
+
+                    }
+                    else if($(this).text() == '2x2'){
+                        vector2x2indexnum = 1;
+                        vector2x2line = '';
+                        vector2x2Value = Array('[','x',',','x',']');
+                        for(var i=0; i<vector2x2Value.length; i++){
+                        vector2x2line += vector2x2Value[i];}
+                        ifvec2x2 = 1;
+                        $('#result').text(vector2x2line);
+
+                    }
+                    
+                
+                        else
+                        { 
+                                        
+                           if(ifvec == 1 && vectorindexnum <= 7){
+                               
+                        
+                               var savevec = '';
+                               
+                               if( vectorValue[1] == '-'){
+                           
+                        
+                                var savevec = '';
+                                vectorValue[1] = '-' + $(this).text();
+                                for(var i=0; i<vectorValue.length; i++){
+                    
+                                    savevec += vectorValue[i];
+                                                                }
+                    
+                                                             
+                                    vectorline = savevec;
+                                    $('#result').text(vectorline);
+                                        }
+                                       else if( vectorValue[3] == '-'){
+                           
+                        
+                                 var savevec = '';
+                           vectorValue[3] = '-' + $(this).text();
+                           for(var i=0; i<vectorValue.length; i++){
+               
+                               savevec += vectorValue[i];
+                                                           }
+               
+                                                        
+                               vectorline = savevec;
+                               $('#result').text(vectorline);
+                                   }
+                                  else if( vectorValue[5] == '-'){
+                           
+                        
+                           var savevec = '';
+                           vectorValue[5] = '-' + $(this).text();
+                           for(var i=0; i<vectorValue.length; i++){
+               
+                               savevec += vectorValue[i];
+                                                           }
+               
+                                                        
+                               vectorline = savevec;
+                               $('#result').text(vectorline);
+                                   }
+                               else{
+                               
+                                
+                                    vectorValue[vectorindexnum] = $(this).text();
+                                     for(var i=0; i<vectorValue.length; i++){
+                                
+                                            savevec += vectorValue[i];
+                            
+                                        }
+                           
+                                                vectorline = savevec;
+                                                vectorindexnum += 2;
+                                            $('#result').text(vectorline);
+                                         
+                               }
+                           }
+                           else if(ifvec2x2 == 1 && vector2x2indexnum <= 5){
+                               
+                        
+                               var savevec = '';
+                               
+                               if( vector2x2Value[1] == '-'){
+                           
+                        
+                                var savevec = '';
+                                vector2x2Value[1] = '-' + $(this).text();
+                                for(var i=0; i<vector2x2Value.length; i++){
+                    
+                                    savevec += vector2x2Value[i];
+                                                                }
+                    
+                                                             
+                                    vector2x2line = savevec;
+                                    $('#result').text(vector2x2line);
+                                        }
+                                       else if( vector2x2Value[3] == '-'){
+                           
+                        
+                                 var savevec = '';
+                           vector2x2Value[3] = '-' + $(this).text();
+                           for(var i=0; i<vector2x2Value.length; i++){
+               
+                               savevec += vector2x2Value[i];
+                                                           }
+               
+                                                        
+                               vector2x2line = savevec;
+                               $('#result').text(vector2x2line);
+                                   }
+
+                               else{
+                                    vector2x2Value[vector2x2indexnum] = $(this).text();
+                                     for(var i=0; i<vector2x2Value.length; i++){
+                                
+                                            savevec += vector2x2Value[i];
+                            
+                                        }
+                           
+                                                vector2x2line = savevec;
+                                                vector2x2indexnum += 2;
+                                            $('#result').text(vector2x2line);
+                                         }
+                           }
+                             else{
+
+                            displayValue += $(this).text();
+                            helpValue = '';
+                            $('#result').text(displayValue); 
+                            }
+                             
+                             if(vectorindexnum == 7 && vectorValue[5] != '-'){
+                             vectorindexnum = 1;
+                             ifvec = 0;
+                             displayValue += vectorline;
+                             $('#result').text(displayValue);
+                             }
+
+                             else if(vector2x2indexnum == 5 && vector2x2Value[3] != '-'){
+                             vector2x2indexnum = 1;
+                             ifvec2x2 = 0;
+                             displayValue += vector2x2line;
+                             $('#result').text(displayValue);
+                             }
+                       
+                          
+                        }
+
+                        var node = math.parse(displayValue);
+                        var latex = node.toTex({parenthesis: 'keep', implicit: 'hide'});
+                        var elem = MathJax.Hub.getAllJax('latex')[0];
+                        MathJax.Hub.Queue(['Text', elem, latex]);                      
+                    }
+
+                    e.preventDefault()
+                    
+                })
+            })
+        })
+
+        
+    </script>
+</head>
+ 
+<body>
+    <h1>
+            2014726036 HW1
+    </h1>           
+   
+    <div id="calculator">
+        <div id="result"></div>
+        <div id="latex"></div>
+        <div id="history"></div>
+        <div id="wrapper">
+            <div id="keysetnum">
+                <span class="key number-key">1</span>
+                <span class="key number-key">2</span>
+                <span class="key number-key">3</span>
+                <span class="key number-key">4</span>
+                <span class="key number-key">5</span>
+                <span class="key number-key">6</span>
+                <span class="key number-key">7</span>
+                <span class="key number-key">8</span>
+                <span class="key number-key">9</span>
+                <span class="key cal-key">.</span>
+                <span class="key number-key">0</span>
+                <span class="key cal-key">,</span>
+            </div>
+            <div id="keysetextra">
+
+                    <span class="key par-key">(</span>
+                    <span class="key par-key">)</span>
+                    <span class="key par-key">[</span>
+                    <span class="key par-key">]</span>
+
+                    <span class="key function-key">^</span>
+                    <span class="key function-key">log</span>
+                    <span class="key cal-key">%</span>
+                    <span class="key cal-key">=</span> 
+
+                    <span class="key cal-key">+</span>
+                    <span class="key cal-key">-</span>
+                    <span class="key cal-key">*</span>
+                    <span class="key cal-key">/</span>
+    
+                    <span class="key function-key">exp</span>
+                    <span class="key function-key">sqrt</span>
+                    <span class="key function-key">cross</span>
+                    <span class="key function-key">det</span>        
+            </div>
+            <div id="keysetevcl">
+                    <span class="key back-key"><-</span>
+                    <span class="key clear-key">CL</span>
+                    <span class="key eval-key">EV</span>
+ 
+            </div>
+            <div id="keysetoper">
+                <span class="key popup-key">xyz</span>
+                <span class="key popup-key">const</span>
+                <span class="key popup-key">Tfunc</span>
+            </div>
+        </div>
+        <span class="key help-key">help</span>
+        
+        <span class="key long-key">inv</span>
+        <span class="key long-key">dot</span>
+        <span class="key long-key">copy</span>
+        <span class="key long-key">pst</span>
+        <span class="key long-key">abs</span>
+        <span class="key popup-key" style ="margin : 0px 0px 0px 5px" >vec</span>
+        
+        <div id="outline">
+            <span class="key">C</span>
+            <span class="key">:</span>
+            <span class="key"><</span>
+            <span class="key">></span>
+            <span class="key">!</span>
+            <span class="key function-key">f</span>
+            <span class="key function-key">g</span>
+            <span class="key" style = "width : 115px; font-style:italic; font-size:15px" >history</span>
+        </div>
+        <div class="popupVector">
+                <span class="key invector-key">3x3</span>
+                <span class="key invector-key">2x2</span>
+            </div>
+        <div class="popupxyz">
+            
+            <div>
+                
+                    <span class="key symbol-key">w</span>
+                    <span class="key symbol-key">x</span>
+                    <span class="key symbol-key">y</span>
+                    <span class="key symbol-key">z</span>
+            
+            </div>
+        
+        </div>
+        <div class="popupConst">
+            <span class="key symbol-key">i</span>
+            <span class="key symbol-key">e</span>
+            <span class="key symbol-key">pi</span>
+        </div>
+        <div class="popupTrif">
+                <span class="key symbol-key">sin</span>
+                <span class="key symbol-key">cos</span>
+                <span class="key symbol-key">tan</span>
+            </div>
+            <div class="popupHistory">
+                <span class="historytxt">answer</span>
+            </div>
+
+            
+        </div>
+    </div>
+</body>
+</html>
